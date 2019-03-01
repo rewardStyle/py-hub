@@ -33,7 +33,7 @@ class Repository:
     def get_days_since_last_push(self):
         """Returns the amount of time, in days, since the last time there was
         a push to the repo."""
-        return (datetime.date.today() - self.pushed_at).days
+        return (datetime.now() - self.pushed_at).days
         
 
 class GitHub:
@@ -50,7 +50,7 @@ class GitHub:
         """Returns a list of proprietary Repository instances, optionally sorted by date of last push"""
         sleep(API_RATE_LIMIT_PAUSE_SECONDS)
         repos = [Repository(r) for r in self.organization.get_repos() if not (ignore_archived and r.archived)]
-        return repos.sort(key=lambda r: r.pushed_at, reverse=True) if sort_by_last_push else repos
+        return sorted(repos, key=lambda r: r.pushed_at, reverse=True) if sort_by_last_push else repos
     
     def get_repo(self, name):
         """Returns a single proprietary instance of a Repository"""

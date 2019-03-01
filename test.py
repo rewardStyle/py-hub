@@ -17,6 +17,14 @@ class TestGitHub(unittest.TestCase):
         repos = self.gh.get_all_repos()
         self.assertGreater(len(repos), 1, msg="The GitHub org should have more than 1 repo present")
     
+    def test_get_all_repos_sorted(self):
+        """Tests the functionality of using the GitHub
+        object to return a list of all repos in the org,
+        sorted by their last push datetime."""
+        repos = self.gh.get_all_repos(sort_by_last_push=True)
+        self.assertTrue(repos is not None)
+        self.assertGreater(len(repos), 1, msg="The GitHub org should have more than 1 repo present")
+    
     def test_get_repo(self):
         """Tests the functionality of getting a single repo."""
         name = 'py-hub'
@@ -24,10 +32,7 @@ class TestGitHub(unittest.TestCase):
         self.assertIsInstance(repo, hub.Repository)
         self.assertEqual(repo.name, name)
         self.assertTrue(repo.repo_obj is not None)
-
-
+    
+    
 if __name__ == '__main__':
     unittest.main()
-
-
-
